@@ -1,0 +1,104 @@
+{
+  "name": "finance",
+  "domain": "https://yak.finance",
+  "siteDir": "..",
+  "outDir": "..",
+  "sourcePage": "index.html",
+  "copyFromSite": [
+    "assets/fonts",
+    "assets/og-yak.jpg",
+    "assets/yak-favicon.svg"
+  ],
+  "writeFiles": {
+    "CNAME": "yak.finance\n"
+  },
+  "copyFiles": {
+    "molt-petit.pdf": "../incoming/molt-petit.pdf"
+  },
+  "foreign": {
+    "base": "https://yak.ad",
+    "routes": {
+      "home": "/",
+      "diane": "/diane",
+      "agent-cage": "/agent-cage",
+      "research": "/research",
+      "consulting": "/consulting",
+      "about": "/about",
+      "contact": "/contact"
+    }
+  },
+  "src": {
+    "page": "index.dc.html"
+  },
+  "fonts": {
+    "body": "Source Serif 4",
+    "heading": "Source Serif 4"
+  },
+  "og": {
+    "og:type": "website",
+    "og:site_name": "Yak Software",
+    "og:image": "https://yak.finance/assets/og-yak.jpg",
+    "og:image:width": "1200",
+    "og:image:height": "630"
+  },
+  "twitter": {
+    "twitter:card": "summary_large_image",
+    "twitter:site": "@just_georgeee",
+    "twitter:image": "https://yak.finance/assets/og-yak.jpg"
+  },
+  "hashRedirect": true,
+  "notFound": {
+    "title": "Page not found — Yak Software",
+    "basedOn": "finance",
+    "bodyHtml": "<div style=\"padding:14vh 0 18vh\"><h1 style=\"font:400 clamp(30px,4vw,48px)/1.15 'Source Serif 4',serif;letter-spacing:-.02em;color:#3a3733\">Page not found</h1><p style=\"margin-top:16px;max-width:38em;font-size:18px\">This address doesn't match anything on yak.finance. The financial systems pages are the <a href=\"/\">home</a>, <a href=\"/molt-petit\">Molt Petit</a> and <a href=\"/ledger\">Ledger</a>; the rest of Yak's site lives on <a href=\"https://yak.ad/\">yak.ad</a>.</p><p style=\"margin:22px 0 0\"><a href=\"/\" style=\"font:400 14px/1 'Source Code Pro',ui-monospace,monospace\">yak.finance &rarr;</a></p></div>"
+  },
+  "screens": [
+    {
+      "hash": "finance",
+      "route": "/",
+      "hashRedirect": true,
+      "title": "yak.finance — financial systems from Yak Software",
+      "description": "Financial systems from Yak Software: infrastructure where being wrong is unrecoverable. The work currently starts with two pieces — Molt Petit and the Ledger built on top of it.",
+      "jsonLd": {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Yak Software",
+        "url": "https://yak.finance/",
+        "logo": "https://yak.finance/assets/yak-favicon.svg",
+        "image": "https://yak.finance/assets/og-yak.jpg",
+        "description": "Independent engineering and research company in Andorra, working on dictation, coding agents, consensus protocols and financial infrastructure.",
+        "email": "mailto:george@yak.ad",
+        "founder": {
+          "@type": "Person",
+          "name": "George Agapov",
+          "url": "https://georgeee.com/"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "AD"
+        },
+        "sameAs": [
+          "https://github.com/georgeee"
+        ]
+      }
+    },
+    {
+      "hash": "molt-petit",
+      "route": "/molt-petit",
+      "title": "Molt Petit — a deliberately small BFT consensus protocol — Yak Software",
+      "description": "Molt Petit is a deliberately small BFT consensus protocol with recursive certificates, deterministic finality and light clients that never need to replay history — implemented in Rust, imported into Lean 4 and machine-checked. The consensus core of Ledger.",
+      "hrefRewrites": [
+        {
+          "from": "mailto:george@yak.ad?subject=Molt%20Petit%20%E2%80%94%20paper%20and%20artifact",
+          "to": "https://yak.finance/molt-petit.pdf"
+        }
+      ]
+    },
+    {
+      "hash": "ledger",
+      "route": "/ledger",
+      "title": "Ledger — records that stay correct and private — Yak Software",
+      "description": "Company records that stay correct, and private, even when someone inside — human or AI — has access to every server. The Molt Petit consensus core is proven; the ledger layer above it is designed and not yet built."
+    }
+  ]
+}
