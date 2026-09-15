@@ -432,7 +432,40 @@ function hashRedirectSnippet(cfg) {
   if (!cfg.hashRedirect) return null;
   const routes = {};
   for (const s of cfg.screens) routes[s.hash] = s.route;
-  return `<script>(function(){var r=${JSON.stringify(routes)},h=(location.hash||"").slice(1);if(r[h])location.replace(r[h]);})();</script>`;
+  // legacy hash links to screens that moved to the foreign domain keep
+  // working: they replace straight to the foreign base + path
+  const foreign = cfg.foreign ? { base: cfg.foreign.base, routes: cfg.foreign.routes } : null;
+  return `<script>(function(){var r=${JSON.stringify(routes)},f=${JSON.stringify(foreign)},h=(location.hash||"").slice(1);if(r[h])location.replace(r[h]);else if(f&&f.routes[h])location.replace(f.base+f.routes[h]);})();</script>`;
+}
+
+// Minimal standalone page at a retired address (config "redirects":
+// [{from, to}]): search engines consolidate on the target via canonical +
+// noindex, browsers follow the instant meta refresh, and the visible line
+// keeps the address working for readers with JS and refresh disabled. Styled
+// with the site's own type and ground so it doesn't look broken.
+function redirectStubHtml(cfg, r) {
+  const esc = (s) => String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const to = esc(r.to);
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Page moved — Yak Software</title>
+<link rel="canonical" href="${to}">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=${to}">
+<link rel="icon" href="/assets/yak-favicon.svg">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<style>body{margin:0;padding:0;background:#f1ece2;color:#3a3733;-webkit-font-smoothing:antialiased;font-family:'Source Serif 4',Georgia,serif;font-size:17px;line-height:1.55}a{color:#3a3733;text-decoration:none;border-bottom:1px solid #d8d0bf;transition:border-color .15s,color .15s}a:hover{color:#c3401f;border-bottom-color:#c3401f}</style>
+</head>
+<body>
+<main style="max-width:38em;margin:0 auto;padding:16vh min(6vw,72px) 18vh">
+<p>This page has moved. The address you followed now lives at <a href="${to}">${esc(r.to)}</a>.</p>
+</main>
+</body>
+</html>
+`;
 }
 
 const SRC_README = (cfg) => `# src/ — the authoring source for ${cfg.domain}
@@ -605,6 +638,15 @@ async function cmdBuild(cfg) {
     fs.writeFileSync(path.join(cfg.outDir, "robots.txt"), robotsTxt(cfg));
     fs.writeFileSync(path.join(cfg.outDir, ".nojekyll"), "");
     console.log("[build] sitemap.xml, robots.txt, .nojekyll written");
+    // redirect stubs at retired addresses; the sitemap stays screens-only, so
+    // stubs are never listed
+    for (const r of cfg.redirects || []) {
+      if (!/^https:\/\//.test(r.to)) throw new Error(`redirect ${r.from}: target must be an absolute https URL, got ${r.to}`);
+      if (cfg.screens.some((s) => s.route === r.from)) throw new Error(`redirect ${r.from} collides with an own screen route`);
+      const file = path.join(cfg.outDir, routeToFile(r.from));
+      fs.writeFileSync(file, redirectStubHtml(cfg, r));
+      console.log(`[build] ${r.from} -> ${r.to} (redirect stub: ${path.relative(cfg.outDir, file)})`);
+    }
   } finally {
     await chrome.close();
     await server.close();
