@@ -20,7 +20,7 @@
     "routes": {
       "home": "/",
       "diane": "/diane",
-      "agent-cage": "/agent-cage",
+      "lodge": "/lodge",
       "research": "/research",
       "consulting": "/consulting",
       "about": "/about",
