@@ -84,9 +84,12 @@ function startServer(roots) {
     // Mirror GitHub Pages: an extensionless request also resolves to <p>.html,
     // so local verification exercises the same URLs visitors will.
     const candidates = path.extname(p) ? [p] : [p, p + ".html"];
+    // Each candidate must stay inside the root it was joined to (not only the first root).
     const found = tryRoots
-      .flatMap((root) => candidates.map((c) => path.normalize(path.join(root, c))))
-      .find((f) => f.startsWith(path.normalize(tryRoots[0])) && fs.existsSync(f) && fs.statSync(f).isFile());
+      .flatMap((root) => candidates.map((c) => [path.normalize(root), path.normalize(path.join(root, c))]))
+      .filter(([root, f]) => f === root || f.startsWith(root + path.sep))
+      .map(([, f]) => f)
+      .find((f) => fs.existsSync(f) && fs.statSync(f).isFile());
     if (!found) { res.writeHead(404, { "Content-Type": "text/plain" }).end("404 " + p); return; }
     fs.readFile(found, (err, data) => {
       if (err) { res.writeHead(404).end("404"); return; }
@@ -508,7 +511,9 @@ the \`jsonLd\` key of the home screen.
 `;
 
 async function cmdBuild(cfg) {
-  if (cfg.outDir === cfg.siteDir || cfg.outDir.startsWith(cfg.siteDir + path.sep) || cfg.siteDir.startsWith(cfg.outDir + path.sep)) {
+  // --pages-only rewrites the root pages in place (outDir === siteDir is its normal setup); only a full build
+  // empties outDir, so only a full build needs the two trees disjoint.
+  if (!PAGES_ONLY && (cfg.outDir === cfg.siteDir || cfg.outDir.startsWith(cfg.siteDir + path.sep) || cfg.siteDir.startsWith(cfg.outDir + path.sep))) {
     throw new Error("outDir must be disjoint from siteDir");
   }
   const redirect = hashRedirectSnippet(cfg);
