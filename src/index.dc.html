@@ -14,7 +14,7 @@
 .fig-h>div{zoom:min(1,tan(atan2(100cqw,1024px)));zoom:min(1,calc(100cqw / 1024px))}
 .fig-v>div{zoom:min(1,tan(atan2(100cqw,400px)));zoom:min(1,calc(100cqw / 400px))}
 @media (max-width:760px){.fig-h{display:none}.fig-v{display:block}}
-@media (max-width:520px){.fig-bleed{margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}}.wtc{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,auto);grid-auto-flow:column;column-gap:44px}@media (max-width:900px){.wtc{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}}</style></helmet>
+@media (max-width:520px){.fig-bleed{margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}}.wtc{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,auto);grid-auto-flow:column;column-gap:44px}.wtc>div:nth-child(3),.wtc>div:last-child{border-bottom:0!important}@media (max-width:900px){.wtc{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}.wtc>div:nth-child(3){border-bottom:1px solid #d8d0bf!important}}</style></helmet>
 <div class="{{ grainClass }}" style="min-height:100vh;background:#f1ece2;display:flex;flex-direction:column">
 <header style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;padding:28px min(6vw,72px) 0;max-width:1120px;width:100%;box-sizing:border-box;margin:0 auto">
 <a href="#home" onClick="{{ goHome }}" style="font:500 26px/1 'Source Serif 4',serif;letter-spacing:-.035em;color:#3a3733;border:0">yak<span style="color:#c3401f">.</span></a>
