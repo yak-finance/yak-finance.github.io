@@ -130,14 +130,14 @@
 
 <footer style="width:100%;max-width:1120px;box-sizing:border-box;margin:0 auto;padding:28px min(6vw,72px) 36px;border-top:1px solid #d8d0bf;display:flex;justify-content:space-between;gap:12px 32px;flex-wrap:wrap;font:400 13px/1.6 'Source Code Pro',monospace;color:#7a7368">
 <span>Yak Software SLU · Andorra</span>
-<span style="display:flex;gap:22px"><a href="#home" onClick="{{ goHome }}" style="border:0;color:#7a7368" style-hover="color:#c3401f">yak.ad</a><a href="#finance" onClick="{{ goFinance }}" style="border:0;color:#7a7368" style-hover="color:#c3401f">yak.finance</a><a href="#consulting" onClick="{{ goConsulting }}" style="border:0;color:#7a7368" style-hover="color:#c3401f">consulting</a><a href="https://github.com/georgeee" style="border:0;color:#7a7368" style-hover="color:#c3401f">github</a></span>
+<span style="display:flex;gap:22px"><a href="#home" onClick="{{ goHome }}" style="border:0;color:#7a7368" style-hover="color:#c3401f">yak.ad</a><a href="#finance" onClick="{{ goFinance }}" style="border:0;color:#7a7368" style-hover="color:#c3401f">yak.finance</a><a href="https://github.com/georgeee" style="border:0;color:#7a7368" style-hover="color:#c3401f">github</a></span>
 </footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;grain&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Felt grain on the ground&quot;,&quot;section&quot;:&quot;Surface&quot;},&quot;financeInNav&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;yak.finance in the navigation (default: footer only)&quot;,&quot;section&quot;:&quot;Content&quot;}}">
 class Component extends DCLogic {
   state = { page: 'home' };
-  pages = ['home','diane','lodge','molt-petit','ledger','consulting','research','about','contact','finance'];
+  pages = ['home','diane','lodge','molt-petit','ledger','research','about','contact','finance'];
   componentDidMount() {
     const fromHash = () => {
       const h = (location.hash || '').replace('#','');
@@ -160,7 +160,7 @@ class Component extends DCLogic {
       isMoltPetit: p === 'molt-petit', isLedger: p === 'ledger',
       isFinance: p === 'finance',
       goHome: this.go('home'), goMoltPetit: this.go('molt-petit'), goLedger: this.go('ledger'),
-      goConsulting: this.go('consulting'), goResearch: this.go('research'), goAbout: this.go('about'), goContact: this.go('contact'), goFinance: this.go('finance'),
+      goResearch: this.go('research'), goAbout: this.go('about'), goContact: this.go('contact'), goFinance: this.go('finance'),
       workCurrent: isWork ? 'page' : undefined, researchCurrent: p === 'research' ? 'page' : undefined, aboutCurrent: p === 'about' ? 'page' : undefined, contactCurrent: p === 'contact' ? 'page' : undefined, financeCurrent: p === 'finance' ? 'page' : undefined,
       grainClass: (this.props.grain ?? true) ? 'grain' : '',
       financeInNav: this.props.financeInNav ?? false,
